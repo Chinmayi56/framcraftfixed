@@ -407,10 +407,10 @@ export function productDetailPage(slug) {
           ${priceBlock(p, { size: 'font-display text-2xl font-semibold' })}
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-3 mb-3">
-          <button data-cart-add="${p.id}" ${p.stockStatus === 'Out of Stock' ? 'disabled' : ''} class="flex-1 border border-fc-green text-fc-green font-medium py-3 rounded-xl hover:bg-fc-greenlight transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent">Add to Cart</button>
-          <button data-getcode="${p.id}" ${p.stockStatus === 'Out of Stock' ? 'disabled' : ''} class="flex-1 bg-fc-green text-white font-medium py-3 rounded-xl hover:bg-fc-greendark transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-fc-green">Get a Code</button>
-          <button data-wishlist="${p.id}" aria-pressed="${wishlisted}" class="w-12 h-12 shrink-0 self-center sm:self-auto border border-fc-line rounded-xl flex items-center justify-center hover:border-fc-wheat transition-colors">
+        <div class="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_3rem] sm:flex gap-2.5 sm:gap-3 mb-3 items-stretch">
+          <button data-cart-add="${p.id}" ${p.stockStatus === 'Out of Stock' ? 'disabled' : ''} class="min-w-0 sm:flex-1 border border-fc-green text-fc-green font-medium py-3 rounded-xl hover:bg-fc-greenlight transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent">Add to Cart</button>
+          <button data-getcode="${p.id}" ${p.stockStatus === 'Out of Stock' ? 'disabled' : ''} class="min-w-0 sm:flex-1 bg-fc-green text-white font-medium py-3 rounded-xl hover:bg-fc-greendark transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-fc-green">Get a Code</button>
+          <button data-wishlist="${p.id}" aria-pressed="${wishlisted}" class="w-12 h-full min-h-12 sm:h-12 sm:self-auto border border-fc-line rounded-xl flex items-center justify-center hover:border-fc-wheat hover:bg-fc-greenlight transition-colors" aria-label="${wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}">
             <i data-lucide="heart" class="w-5 h-5 ${wishlisted ? 'text-fc-wheat fill-fc-wheat' : ''}"></i>
           </button>
         </div>

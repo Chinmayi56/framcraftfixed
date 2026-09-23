@@ -107,9 +107,11 @@ export function header() {
   <header id="site-header" class="sticky top-0 z-50 hdr-blur bg-white/80 border-b border-fc-line transition-shadow">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="h-16 flex items-center justify-between gap-4">
-        <a href="#/" class="flex items-center gap-0.5 sm:gap-1 shrink-0 min-w-0">
-  <img src="${COMPANY.logoMark}" alt="Farm Craft" class="h-10 w-[112px] sm:h-11 sm:w-[128px] rounded-xl bg-white object-contain p-0.5 shrink-0" />
-  <span class="font-display font-bold text-base sm:text-lg tracking-tight leading-none">
+        <a href="#/" class="brand-lockup flex items-center gap-1.5 sm:gap-2 shrink-0 min-w-0" aria-label="Farm Craft home">
+  <span class="brand-mark" aria-hidden="true">
+    <img src="${COMPANY.logoMark}" alt="" />
+  </span>
+  <span class="font-display font-bold text-base sm:text-lg tracking-tight leading-none whitespace-nowrap">
     FARM CRAFT
   </span>
 </a>
@@ -196,9 +198,11 @@ export function footer() {
   <footer class="bg-fc-charcoal text-white/90 mt-24 pb-20 lg:pb-0">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid grid-cols-2 lg:grid-cols-5 gap-10">
       <div class="col-span-2 lg:col-span-2">
-        <div class="flex items-center gap-2.5 mb-4">
-          <img src="${COMPANY.logoMark}" alt="Farm Craft" class="h-11 w-28 rounded-xl bg-white object-contain p-0.5 shrink-0" />
-          <span class="font-display font-bold text-lg">FARM CRAFT</span>
+        <div class="flex items-center gap-2 mb-4">
+          <span class="brand-mark brand-mark-footer" aria-hidden="true">
+            <img src="${COMPANY.logoMark}" alt="" />
+          </span>
+          <span class="font-display font-bold text-lg leading-none">FARM CRAFT</span>
         </div>
         <p class="text-sm text-white/60 max-w-xs leading-relaxed">Agricultural machinery and grain handling equipment engineered for farms, mills and agri-businesses.</p>
 
@@ -230,7 +234,7 @@ export function footer() {
     </div>
     <div class="border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 text-center text-xs text-white/45">
-        <span>© 2026 Farm Craft.</span>
+        <span>© 2026 Farm Craft. All rights reserved.</span>
       </div>
     </div>
   </footer>`;
