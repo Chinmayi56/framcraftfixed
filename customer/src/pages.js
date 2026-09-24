@@ -30,7 +30,7 @@ export function loginPage() {
             <input id="login-mobile" name="mobile" type="tel" required inputmode="numeric" maxlength="10" autocomplete="tel-national" pattern="[6-9][0-9]{9}" class="w-full border border-fc-line rounded-xl px-4 py-2.5 text-sm outline-none focus:border-fc-green transition-colors" placeholder="9876543210" />
             <p class="text-xs text-red-500 mt-1 hidden" data-error-for="mobile">Enter a valid 10-digit Indian mobile number.</p>
           </div>
-          <button type="submit" class="w-full bg-fc-green text-white font-medium py-2.5 rounded-xl hover:bg-fc-greendark transition-colors">Login / Continue</button>
+          <button type="submit" class="w-full bg-fc-green text-white font-medium py-2.5 rounded-xl hover:bg-fc-greendark transition-colors">Login </button>
         </form>
       </div>
     </div>
