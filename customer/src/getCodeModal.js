@@ -76,7 +76,7 @@ function stepCustomer() {
     </div>
     <div>
       <label class="block text-sm font-medium mb-1.5">Mobile Number</label>
-      <input data-field="mobile" value="${c.mobile}" class="w-full border border-fc-line rounded-xl px-4 py-2.5 text-sm outline-none focus:border-fc-green" />
+      <input data-field="mobile" value="${c.mobile}" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" class="w-full border border-fc-line rounded-xl px-4 py-2.5 text-sm outline-none focus:border-fc-green" />
     </div>
   </div>`;
 }
@@ -224,7 +224,7 @@ function readFields(container) {
 function validateStep() {
   if (state.step === 1) {
     const { name, email, mobile } = state.customer;
-    if (!name.trim() || (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) || !mobile.trim()) {
+    if (!name.trim() || (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) || !/^[6-9]\d{9}$/.test(mobile.trim())) {
       toast('Please fill in all customer details correctly', { type: 'error' });
       return false;
     }
@@ -241,6 +241,12 @@ function validateStep() {
 
 function bind(root) {
   root.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeModal));
+
+  const mobileInput = root.querySelector('[data-field=\"mobile\"]');
+  mobileInput?.addEventListener('input', () => {
+    mobileInput.value = mobileInput.value.replace(/\D/g, '').slice(0, 10);
+    state.customer.mobile = mobileInput.value;
+  });
 
   root.querySelectorAll('[data-order-method]').forEach(btn => {
     btn.addEventListener('click', () => {

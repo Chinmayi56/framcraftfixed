@@ -19,94 +19,45 @@ export function loginPage() {
         <img src="${COMPANY.logo}" alt="Farm Craft" class="h-24 w-40 rounded-2xl bg-white object-contain p-1 mb-6" />
         <h1 class="font-display text-2xl font-semibold mb-1.5">Welcome to Farm Craft</h1>
         <p class="text-sm text-fc-slate/70 mb-7">Explore powerful agricultural machinery built for efficient grain handling.</p>
-        <div id="mobile-step">
-          <form id="mobile-form" class="space-y-4" novalidate>
-            <div>
-              <label for="login-name" class="block text-sm font-medium mb-1.5">Full Name</label>
-              <input id="login-name" name="name" type="text" required autocomplete="name" class="w-full border border-fc-line rounded-xl px-4 py-2.5 text-sm outline-none focus:border-fc-green transition-colors" placeholder="Your full name" />
-              <p class="text-xs text-red-500 mt-1 hidden" data-error-for="name">Enter your full name.</p>
-            </div>
-            <div>
-              <label for="login-mobile" class="block text-sm font-medium mb-1.5">Mobile Number</label>
-              <input id="login-mobile" name="mobile" type="tel" required inputmode="numeric" autocomplete="tel" class="w-full border border-fc-line rounded-xl px-4 py-2.5 text-sm outline-none focus:border-fc-green transition-colors" placeholder="9876543210" />
-              <p class="text-xs text-red-500 mt-1 hidden" data-error-for="mobile">Enter a valid 10-digit Indian mobile number.</p>
-            </div>
-            <button type="submit" class="w-full bg-fc-green text-white font-medium py-2.5 rounded-xl hover:bg-fc-greendark transition-colors">Send OTP</button>
-          </form>
-        </div>
-        <div id="otp-step" class="hidden">
-          <form id="otp-form" class="space-y-4" novalidate>
-            <div>
-              <p class="text-sm text-fc-slate/70 mb-1.5">Enter the 4-digit OTP for</p>
-              <p class="text-sm font-semibold mb-4" id="otp-target-mobile"></p>
-              <label for="login-otp" class="block text-sm font-medium mb-1.5">OTP</label>
-              <input id="login-otp" name="otp" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="4" required autocomplete="one-time-code" class="w-full border border-fc-line rounded-xl px-4 py-2.5 text-sm tracking-[0.5em] text-center font-mono outline-none focus:border-fc-green transition-colors" placeholder="••••" />
-              <p class="text-xs text-red-500 mt-1 hidden" data-error-for="otp">Incorrect OTP. Please try again.</p>
-            </div>
-            <button type="submit" class="w-full bg-fc-green text-white font-medium py-2.5 rounded-xl hover:bg-fc-greendark transition-colors">Verify OTP</button>
-            <button type="button" id="change-mobile" class="w-full text-sm font-medium text-fc-slate/70 hover:text-fc-charcoal transition-colors">Change details</button>
-          </form>
-        </div>
-        <div class="mt-7 rounded-2xl border border-fc-wheat/40 bg-amber-50/50 p-4">
-          <div class="flex items-center gap-2 mb-2.5"><i data-lucide="sparkles" class="w-4 h-4 text-fc-wheat"></i><span class="text-sm font-semibold">Demo Login</span></div>
-          <p class="text-xs text-fc-slate/70 mb-3">Enter your name and Indian mobile number, then use this demo OTP — no real SMS needed.</p>
-          <div class="text-xs bg-white rounded-lg border border-fc-line p-3 space-y-1 font-mono"><div>Demo OTP: <strong>1234</strong></div></div>
-        </div>
+        <form id="mobile-form" class="space-y-4" novalidate>
+          <div>
+            <label for="login-name" class="block text-sm font-medium mb-1.5">Full Name</label>
+            <input id="login-name" name="name" type="text" required autocomplete="name" class="w-full border border-fc-line rounded-xl px-4 py-2.5 text-sm outline-none focus:border-fc-green transition-colors" placeholder="Your full name" />
+            <p class="text-xs text-red-500 mt-1 hidden" data-error-for="name">Enter your full name.</p>
+          </div>
+          <div>
+            <label for="login-mobile" class="block text-sm font-medium mb-1.5">Mobile Number</label>
+            <input id="login-mobile" name="mobile" type="tel" required inputmode="numeric" maxlength="10" autocomplete="tel-national" pattern="[6-9][0-9]{9}" class="w-full border border-fc-line rounded-xl px-4 py-2.5 text-sm outline-none focus:border-fc-green transition-colors" placeholder="9876543210" />
+            <p class="text-xs text-red-500 mt-1 hidden" data-error-for="mobile">Enter a valid 10-digit Indian mobile number.</p>
+          </div>
+          <button type="submit" class="w-full bg-fc-green text-white font-medium py-2.5 rounded-xl hover:bg-fc-greendark transition-colors">Login / Continue</button>
+        </form>
       </div>
     </div>
   </div>`;
 }
 
 export function attachLoginPage(router) {
-  const mobileStep = document.getElementById('mobile-step');
-  const otpStep = document.getElementById('otp-step');
   const mobileForm = document.getElementById('mobile-form');
-  const otpForm = document.getElementById('otp-form');
-  const otpTargetMobile = document.getElementById('otp-target-mobile');
-  const otpInput = document.getElementById('login-otp');
-  let pendingName = '';
-  let pendingMobile = '';
-
-  function normalizeMobile(value) {
-    let digits = String(value || '').replace(/\D/g, '');
-    if (digits.startsWith('91') && digits.length === 12) digits = digits.slice(2);
-    return digits;
-  }
-  function showOtpStep(name, mobile) {
-    pendingName = name; pendingMobile = mobile;
-    otpTargetMobile.textContent = mobile;
-    mobileStep.classList.add('hidden'); otpStep.classList.remove('hidden');
-    otpForm.querySelector('[data-error-for="otp"]').classList.add('hidden');
-    otpForm.reset(); otpInput.focus();
-  }
-  function showMobileStep() {
-    pendingName = ''; pendingMobile = '';
-    otpStep.classList.add('hidden'); mobileStep.classList.remove('hidden');
-  }
-  document.getElementById('change-mobile')?.addEventListener('click', showMobileStep);
+  const mobileInput = document.getElementById('login-mobile');
+  mobileInput?.addEventListener('input', () => {
+    mobileInput.value = mobileInput.value.replace(/\D/g, '').slice(0, 10);
+  });
 
   mobileForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const data = new FormData(mobileForm);
     const name = String(data.get('name') || '').trim();
-    const mobile = normalizeMobile(data.get('mobile'));
+    const mobile = String(data.get('mobile') || '').trim();
     const nameErr = mobileForm.querySelector('[data-error-for="name"]');
     const mobileErr = mobileForm.querySelector('[data-error-for="mobile"]');
     if (name.length < 2) { nameErr.classList.remove('hidden'); return; }
     nameErr.classList.add('hidden');
     if (!/^[6-9]\d{9}$/.test(mobile)) { mobileErr.classList.remove('hidden'); return; }
     mobileErr.classList.add('hidden');
-    try { await authService.sendOtp(mobile); toast(`OTP sent for ${mobile}`); showOtpStep(name, mobile); }
-    catch (err) { toast(err.message || 'Could not send OTP', {type:'error'}); }
-  });
-
-  otpForm?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const otp = String(new FormData(otpForm).get('otp') || '').trim();
-    const otpErr = otpForm.querySelector('[data-error-for="otp"]');
-    const result = await authService.verifyOtp(pendingName, pendingMobile, otp);
-    if (result.ok) { otpErr.classList.add('hidden'); toast('Welcome back!'); window.location.hash = '#/'; }
-    else { otpErr.textContent = result.error; otpErr.classList.remove('hidden'); }
+    const result = await authService.loginCustomer(name, mobile);
+    if (result.ok) { toast('Welcome back!'); window.location.hash = '#/'; }
+    else { toast(result.error, {type:'error'}); }
   });
 }
 
@@ -894,7 +845,7 @@ export function contactPage() {
           </div>
           <div>
             <label class="block text-sm font-medium mb-1.5" for="c-mobile">Mobile</label>
-            <input id="c-mobile" name="mobile" required class="w-full border border-fc-line rounded-xl px-4 py-2.5 text-sm outline-none focus:border-fc-green" />
+            <input id="c-mobile" name="mobile" type="tel" inputmode="numeric" maxlength="10" pattern="[6-9][0-9]{9}" required class="w-full border border-fc-line rounded-xl px-4 py-2.5 text-sm outline-none focus:border-fc-green" />
           </div>
         </div>
         <div>
@@ -932,8 +883,17 @@ export function contactPage() {
 
 export function attachContactPage() {
   const form = document.getElementById('contact-form');
+  const mobile = document.getElementById('c-mobile');
+  mobile?.addEventListener('input', () => {
+    mobile.value = mobile.value.replace(/\D/g, '').slice(0, 10);
+  });
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
+    if (!/^[6-9]\d{9}$/.test(String(mobile?.value || '').trim())) {
+      toast('Enter a valid 10-digit Indian mobile number.', { type: 'error' });
+      mobile?.focus();
+      return;
+    }
     form.reset();
     toast('Your enquiry has been sent — we\u2019ll be in touch shortly.');
   });

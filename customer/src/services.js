@@ -9,8 +9,15 @@ import { COMPANY } from './data.js';
 // local-dev `/api` path that Vite proxies to http://127.0.0.1:8000.
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || '/api').replace(/\/$/, '');
 const KEYS = { auth:'fc_auth_session', token:'fc_auth_token', wishlist:'fc_wishlist', addresses:'fc_addresses' };
-function read(key, fallback){ try{ const raw=localStorage.getItem(key); return raw?JSON.parse(raw):fallback; }catch{return fallback;} }
-function write(key,value){ localStorage.setItem(key,JSON.stringify(value)); }
+function userScopedKey(key){
+  try{
+    const auth=JSON.parse(localStorage.getItem(KEYS.auth)||'null');
+    const uid=auth?.id || auth?.mobile || auth?.customer_id || 'guest';
+    return `${key}_${uid}`;
+  }catch{return `${key}_guest`;}
+}
+function read(key, fallback){ try{ const raw=localStorage.getItem(userScopedKey(key)); return raw?JSON.parse(raw):fallback; }catch{return fallback;} }
+function write(key,value){ localStorage.setItem(userScopedKey(key),JSON.stringify(value)); }
 async function api(path, options={}){
   const token=localStorage.getItem(KEYS.token);
   const headers={'Content-Type':'application/json',...(options.headers||{})};
@@ -54,6 +61,7 @@ async function api(path, options={}){
 }
 function saveAuth(data){ write(KEYS.auth,data.user); localStorage.setItem(KEYS.token,data.access_token); }
 export const authService={
+  async loginCustomer(name,mobile){ try{const data=await api('/auth/customer/login',{method:'POST',body:JSON.stringify({name,mobile})}); saveAuth(data); return {ok:true,session:data.user};}catch(e){return {ok:false,error:e.message};} },
   async sendOtp(mobile){ await api('/auth/customer/send-otp',{method:'POST',body:JSON.stringify({mobile})}); return {ok:true}; },
   async verifyOtp(name,mobile,otp){ try{const data=await api('/auth/customer/verify-otp',{method:'POST',body:JSON.stringify({name,mobile,otp})}); saveAuth(data); return {ok:true,session:data.user};}catch(e){return {ok:false,error:e.message};} },
   logout(){ localStorage.removeItem(KEYS.token); localStorage.removeItem(KEYS.auth); },
